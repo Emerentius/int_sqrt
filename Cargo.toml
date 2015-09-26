@@ -1,0 +1,4 @@
+[package]
+name = "int_sqrt"
+version = "0.1.0"
+authors = ["Emerentius <Emerentius@arcor.de>"]
