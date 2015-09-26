@@ -5,6 +5,7 @@ pub trait IntSqrt
 {
     fn isqrt(self) -> Self;
     fn sqrt(self) -> Option<Self>;
+    fn is_square(self) -> bool;
 }
 
 macro_rules! implement_int_sqrt {
@@ -28,6 +29,16 @@ macro_rules! implement_int_sqrt {
                 match root*root == self {
                     true => Some(root),
                     false => None,
+                }
+            }
+
+            fn is_square(self) -> bool {
+                match self % 16 {
+                    0 | 1 | 4 | 9 => {
+                        let root = self.isqrt();
+                        root*root == self
+                    },
+                    _ => false,
                 }
             }
         }
@@ -62,5 +73,16 @@ fn trait_sqrt_correctness() {
         for m in sq+1..next_sq {
             assert!( m.sqrt().is_none() );
         }
+    }
+}
+
+#[test]
+fn squareness_check() {
+    let squares: Vec<u32> = (1..1000).map(|n| n*n).collect();
+    for &n_sq in &squares {
+        assert!(n_sq.is_square());
+    }
+    for n_non_sq in (1..1_000_000).filter(|n| squares.binary_search(&n).is_err()) {
+        assert!( !n_non_sq.is_square() );
     }
 }
