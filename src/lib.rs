@@ -11,12 +11,13 @@ pub trait IntSqrt
 macro_rules! implement_int_sqrt {
     ( $T:ty ) => {
         impl IntSqrt for $T {
+            // newton's method
             fn isqrt(self) -> Self {
                 let mut last_x = 1;
                 let mut x = (last_x+self/last_x)/2;
                 let mut next_x = (x+self/x)/2;
 
-                while last_x != next_x && x != next_x {
+                while x != next_x && last_x != next_x {
                     last_x = x;
                     x = next_x;
                     next_x = (x+self/x)/2
@@ -25,10 +26,15 @@ macro_rules! implement_int_sqrt {
             }
 
             fn sqrt(self) -> Option<Self> {
-                let root = self.isqrt();
-                match root*root == self {
-                    true => Some(root),
-                    false => None,
+                match self % 16 {
+                    0 | 1 | 4 | 9 => {
+                        let root = self.isqrt();
+                        match root*root == self {
+                            true => Some(root),
+                            false => None,
+                        }
+                    },
+                    _ => None,
                 }
             }
 
