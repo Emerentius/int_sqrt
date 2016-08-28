@@ -7,16 +7,9 @@ use int_sqrt::IntSqrt;
 #[bench]
 fn isqrt_bench(b: &mut test::Bencher) {
     b.iter(|| {
-        let mut sum = 0;
-        for n in 1u32..1_00 {
-            let sq = n*n;
-            let next_sq = (n+1)*(n+1);
-            for m in sq..next_sq {
-                if m.isqrt() == n {
-                    sum += m;
-                }
-            }
-        }
+        let sum = (1u64..1_000_000)
+            .map(|n| n.isqrt())
+            .sum::<u64>();
         test::black_box(sum);
     })
 }
@@ -24,16 +17,9 @@ fn isqrt_bench(b: &mut test::Bencher) {
 #[bench]
 fn is_square_bench(b: &mut test::Bencher) {
     b.iter(|| {
-        let mut sum = 0;
-        for n in 1u32..1_00 {
-            let sq = n*n;
-            let next_sq = (n+1)*(n+1);
-            for m in sq..next_sq {
-                if m.is_square() {
-                    sum += m;
-                }
-            }
-        }
+        let sum = (1u64..1_000_000)
+            .filter(|n| n.is_square())
+            .sum::<u64>();
         test::black_box(sum);
     })
 }
@@ -41,16 +27,9 @@ fn is_square_bench(b: &mut test::Bencher) {
 #[bench]
 fn sqrt_bench(b: &mut test::Bencher) {
     b.iter(|| {
-        let mut sum = 0;
-        for n in 1u32..1_00 {
-            let sq = n*n;
-            let next_sq = (n+1)*(n+1);
-            for m in sq..next_sq {
-                if m.sqrt().is_some() {
-                    sum += m;
-                }
-            }
-        }
+        let sum = (1u64..1_000_000)
+            .filter_map(|n| n.sqrt())
+            .sum::<u64>();
         test::black_box(sum);
     })
 }
